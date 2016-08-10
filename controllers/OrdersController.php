@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Orderdetails;
+use yii\web\HttpException;
 
 /**
  * OrdersController implements the CRUD actions for Orders model.
@@ -36,6 +37,9 @@ class OrdersController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can("admin")) {
+            throw new HttpException(403, 'You are not allowed to perform this action.');
+        }
         $searchModel = new OrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -72,8 +76,6 @@ class OrdersController extends Controller
              $model->save();    
              $modelOrderdetail->orderNumber=$model->orderNumber;
 
-             $modelOrderdetail->quantityOrdered='12';
-
 
             if($modelOrderdetail->load(Yii::$app->request->post())
              && $modelOrderdetail->save()){
@@ -108,13 +110,35 @@ class OrdersController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Orders::findOne($id);
+
+        $modelOrderdetail =Orderdetails::findOne($model->orderNumber);
+      if (!$model) {
+            throw new NotFoundHttpException("The Oder was not found.");
+        }
+        
+
+          if (!$modelOrderdetail) {
+            throw new NotFoundHttpException("The Oderdetail was not found.");
+        }
+        
+        $modelOrderdetail->scenario = 'update';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->orderNumber]);
+
+            if($modelOrderdetail->load(Yii::$app->request->post()) && $modelOrderdetail->save()){
+                  return $this->redirect(['view', 'id' => $model->orderNumber]);  
+            }else{
+                 return $this->render('update', [
+                'model' => $model,'modelOrderdetail'=>$modelOrderdetail
+            ]);
+
+            }
+
+            
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' => $model,'modelOrderdetail'=>$modelOrderdetail
             ]);
         }
     }

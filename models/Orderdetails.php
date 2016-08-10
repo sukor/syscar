@@ -33,7 +33,8 @@ class Orderdetails extends \yii\db\ActiveRecord
     {
         return [
             //[['orderNumber', 'productCode', 'quantityOrdered', 'priceEach', 'orderLineNumber'], 'required'],
-            [['orderNumber', 'quantityOrdered', 'orderLineNumber'], 'integer'],
+            [['orderNumber', 'quantityOrdered', 'orderLineNumber'], 'integer' ],
+            [['quantityOrdered', 'orderLineNumber'], 'required','on'=>'update' ],
             [['priceEach'], 'number'],
             [['productCode'], 'string', 'max' => 15],
             [['orderNumber'], 'exist', 'skipOnError' => true, 'targetClass' => Orders::className(), 'targetAttribute' => ['orderNumber' => 'orderNumber']],

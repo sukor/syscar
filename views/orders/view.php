@@ -31,8 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'orderNumber',
             'orderDate',
             'requiredDate',
-            'orderdetails.productCode',
-            'shippedDate',
+            [
+            'label'=>'customerName',
+            'attribute'=>'customerNumber0.customerName'              
+            ],
+             'shippedDate',
             'status',
             'comments:ntext',
             'customerNumber',
