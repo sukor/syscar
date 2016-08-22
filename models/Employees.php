@@ -26,6 +26,8 @@ class Employees extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $emailchek;
     public static function tableName()
     {
         return 'employees';
@@ -37,14 +39,18 @@ class Employees extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['employeeNumber', 'lastName', 'firstName', 'extension', 'email', 'officeCode', 'jobTitle'], 'required'],
-            [['employeeNumber', 'reportsTo'], 'integer'],
-            [['lastName', 'firstName', 'jobTitle'], 'string', 'max' => 50],
-            [['extension', 'officeCode'], 'string', 'max' => 10],
-            [['email'], 'string', 'max' => 100],
-            [['reportsTo'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['reportsTo' => 'employeeNumber']],
-            [['officeCode'], 'exist', 'skipOnError' => true, 'targetClass' => Offices::className(), 'targetAttribute' => ['officeCode' => 'officeCode']],
-        ];
+            [['employeeNumber','officeCode'],
+             'required','message'=>'{attribute} sila masukan'],
+            // [['employeeNumber', 'reportsTo'], 'integer'],
+            // [['lastName', 'firstName', 'jobTitle'], 'string', 'max' => 50],
+            // [['extension', 'officeCode'], 'string', 'max' => 10],
+            [['email'], 'email'],
+            [['email'], 'unique'],
+            [['emailchek'], 'compare','compareAttribute'=>'email','message'=>'{attribute}  ruang  {compareAttribute}'],
+
+        //     [['reportsTo'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['reportsTo' => 'employeeNumber']],
+        //     [['officeCode'], 'exist', 'skipOnError' => true, 'targetClass' => Offices::className(), 'targetAttribute' => ['officeCode' => 'officeCode']],
+         ];
     }
 
     /**
@@ -67,6 +73,10 @@ class Employees extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+
+    
+
+
     public function getCustomers()
     {
         return $this->hasMany(Customers::className(), ['salesRepEmployeeNumber' => 'employeeNumber']);
@@ -104,4 +114,7 @@ class Employees extends \yii\db\ActiveRecord
     {
         return new EmployeesQuery(get_called_class());
     }
+
+
+    
 }

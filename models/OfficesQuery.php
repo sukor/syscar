@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[Employees]].
+ * This is the ActiveQuery class for [[Offices]].
  *
- * @see Employees
+ * @see Offices
  */
-class EmployeesQuery extends \yii\db\ActiveQuery
+class OfficesQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class EmployeesQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Employees[]|array
+     * @return Offices[]|array
      */
     public function all($db = null)
     {
@@ -25,18 +25,10 @@ class EmployeesQuery extends \yii\db\ActiveQuery
 
     /**
      * @inheritdoc
-     * @return Employees|array|null
+     * @return Offices|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
-    }
-
-
-    public  function officeEmployess($officeCode){
-
-         return   $this->andWhere(['employees.officeCode'
-            =>$officeCode]);
-
     }
 }
