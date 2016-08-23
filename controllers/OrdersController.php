@@ -14,7 +14,7 @@ use yii\web\HttpException;
 /**
  * OrdersController implements the CRUD actions for Orders model.
  */
-class OrdersController extends Controller
+class OrdersController extends \app\components\BaseController
 {
     /**
      * @inheritdoc
@@ -29,6 +29,10 @@ class OrdersController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function init(){
+        parent::init($this);
     }
 
     /**

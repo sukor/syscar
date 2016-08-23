@@ -8,11 +8,13 @@ use app\models\ProductsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\BaseController as Bc;
 
 /**
  * ProductsController implements the CRUD actions for Products model.
  */
-class ProductsController extends Controller
+class ProductsController extends Bc
+//class ProductsController extends \app\components\BaseController
 {
     /**
      * @inheritdoc
@@ -27,6 +29,10 @@ class ProductsController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function init(){
+        parent::init($this);
     }
 
     /**

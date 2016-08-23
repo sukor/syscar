@@ -54,6 +54,14 @@ $config = [
     'modules' => [
         'user' => [
             'class' => 'amnah\yii2\user\Module',
+            'controllerMap' => [
+                'admin'=>'app\controllers\AdminController',
+                'default'=>'app\controllers\DefaultController'
+            ],
+            'modelClasses' => [
+                'User' => 'app\models\User',
+                'Role' => 'app\models\Role'
+            ]
             // set custom module properties here ...
         ],
     ],
