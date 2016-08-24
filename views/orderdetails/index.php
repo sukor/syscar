@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Orders;
 
@@ -20,9 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Orderdetails', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+
+<?php
+
+echo GridView::widget([
+    'id' => 'kv-grid-demo',
+    'dataProvider'=>$dataProvider,
+    'filterModel'=>$searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -46,8 +50,39 @@ $this->params['breadcrumbs'][] = $this->title;
             'quantityOrdered',
             'priceEach',
             'orderLineNumber',
+            ['class'=>'yii\grid\CheckboxColumn'],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+    'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+    'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+    'pjax'=>true, // pjax is set to always true for this demo
+    // set your toolbar
+    'toolbar'=> [
+        ['content'=>
+            Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=> 'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+            Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=> 'Reset Grid'])
+        ],
+        '{export}',
+        '{toggleData}',
+    ],
+    // set export properties
+    'export'=>[
+        'fontAwesome'=>true
+    ],
+   
+    'panel'=>[
+        'type'=>GridView::TYPE_PRIMARY,
+       // 'heading'=>$heading,
+    ],
+    'persistResize'=>false,
+    //'exportConfig'=>$exportConfig,
+]);
+
+
+?>
+
+
+
 </div>

@@ -7,6 +7,15 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
+    'view' => [
+            'theme' => [
+                'basePath' => '@app/themes/gentelella',
+                'baseUrl' => '@web/../themes/gentelella',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/gentelella',
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'dfdfdggd',
@@ -26,7 +35,15 @@ $config = [
         ],
          'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+             'transport' => [
+            'class' => 'Swift_SmtpTransport',
+            'host' => 'smtp.gmail.com',
+            'username' => 'sukor.muhammad@gmail.com',
+            'password' => 'sukormuhammad',
+            'port' => '587',
+            'encryption' => 'tls',
+        ],
             'messageConfig' => [
                 'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
                 'charset' => 'UTF-8',
@@ -52,6 +69,14 @@ $config = [
         */
     ],
     'modules' => [
+        'gridview' =>  [
+        'class' => '\kartik\grid\Module'
+        // enter optional module parameters below - only if you need to  
+        // use your own export download action or custom translation 
+        // message source
+        // 'downloadAction' => 'gridview/export/download',
+        // 'i18n' => []
+    ],
         'user' => [
             'class' => 'amnah\yii2\user\Module',
             'controllerMap' => [

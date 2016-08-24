@@ -26,7 +26,8 @@ use  yii\bootstrap\Html
 $bill=$count;
 foreach ($models as $row) {
 	$bill++;
-	$url=Url::to(['home/detail-employees', 'id' => $row->employeeNumber]);
+	$url=Url::to(['home/detail-employees',
+	 'id' => $row->employeeNumber]);
 ?>
 		<tr>
 			<td><?=$bill?></td>
@@ -37,7 +38,8 @@ foreach ($models as $row) {
 			<?=$row['officeCode0']->city?>
 		 	</td>
 		 	<td>
-		 	<?=Html::a('view',['home/detail-employees','id'=>$row->employeeNumber])?>
+		 	<?=Html::a('view',['home/detail-employees',
+		 	'id'=>$row->employeeNumber])?>
 			<a href="<?=$url?>">detail</a>
 		 	</td>
 		</tr>

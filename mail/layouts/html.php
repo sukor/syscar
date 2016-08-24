@@ -17,6 +17,7 @@ use yii\helpers\Html;
     <?php $this->beginBody() ?>
     <?= $content ?>
     <?php $this->endBody() ?>
+    email tidak perlu di balas
 </body>
 </html>
 <?php $this->endPage() ?>

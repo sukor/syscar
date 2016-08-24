@@ -6,6 +6,8 @@ use yii\data\ActiveDataProvider;
 use app\models\Employees;
 use yii\data\ArrayDataProvider;
 use yii\data\Pagination;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 class HomeController extends \yii\web\Controller
 {
@@ -167,7 +169,20 @@ return $this->render('employees7',$d);
  }
 
     
+public function actionUpload()
+    {
+        $model = new UploadForm();
 
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                return;
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }
 
 
 
