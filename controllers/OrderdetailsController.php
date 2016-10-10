@@ -8,6 +8,7 @@ use app\models\OrderdetailsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\Pjax;
 
 /**
  * OrderdetailsController implements the CRUD actions for Orderdetails model.
@@ -125,4 +126,51 @@ class OrderdetailsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+
+
+    public function actionUpdatebatch(){
+
+        $id=Yii::$app->request->post('id');
+        $order=Yii::$app->request->post('order');
+
+        foreach ($id as $row) {
+
+            $orderupdate= Orderdetails::find()
+            ->where(['orderNumber'=>$row['orderNumber'],
+                    'productCode'=>$row['productCode']
+
+                ])->one();
+
+
+            $orderupdate->quantityOrdered=$order;
+
+            
+
+            if($orderupdate->save()){
+
+               $status=1;
+
+            }else{
+                $status=0;
+            }
+
+             $status_return[]=array('orderNumber'=>$row['orderNumber'],
+                    'productCode'=>$row['productCode'],
+                    'status'=>$status);
+          
+            
+
+        }
+
+     $jsom=  json_encode( $status_return);
+
+
+     print_r($jsom);
+
+
+    }
+
+
+
 }

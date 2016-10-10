@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Orders;
+use yii\bootstrap\Modal;
+use kartik\dialog\Dialog;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrderdetailsSearch */
@@ -22,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 <?php
-
+Pjax::begin(['id'=>'orderpjax']);
 echo GridView::widget([
     'id' => 'kv-grid-demo',
     'dataProvider'=>$dataProvider,
@@ -80,9 +84,106 @@ echo GridView::widget([
     //'exportConfig'=>$exportConfig,
 ]);
 
-
+Pjax::end();
 ?>
 
 
+<?=
+  Html::button('Update',[
+    'type'=>'button',
+    'class'=>'btn btn-info',
+    'id'=>'updatebatch',
+
+    ]);
+
+  ?>
+
 
 </div>
+
+
+
+
+<?php
+Modal::begin([
+    'id'=>'modalupdate',
+    'header' => '<h2>Hello world</h2>',
+   
+]);
+?>
+
+<input type='text' id='updateorder' />
+
+<?php
+
+ echo Html::button('Update',[
+    'type'=>'button',
+    'class'=>'btn btn-info',
+    'id'=>'updatebatchyes',
+
+    ]);
+Modal::end();
+
+
+
+$urlupdate=Url::to(['orderdetails/updatebatch']);
+
+$this->registerJs('
+    $(function(){
+
+      $( "#updatebatch" ).click(function() {
+
+            $("#modalupdate").modal("show");
+        });
+
+            
+       $("#updatebatchyes").on("click", function() {
+    krajeeDialog.confirm("Are you sure you want to proceed?", function (result) {
+        if (result) {
+            var keys = $("#kv-grid-demo").yiiGridView("getSelectedRows");
+        console.log(keys);
+
+        if(keys){
+
+           var order= $("#updateorder").val();
+
+            $.ajax({
+                url:"'.$urlupdate.'",
+                method:"post",
+                data:{id:keys,order:order},
+                success:function(data){
+
+                    $.pjax.reload({container:"#orderpjax"});
+                     $("#modalupdate").modal("hide");
+                   krajeeDialog.alert("Telah update");  
+
+                },
+                error:function(dataerror){
+
+                    krajeeDialog.alert("Tidak Berjaya update");  
+                }
+
+
+            });
+
+        }
+
+
+
+
+
+        
+
+        } else {
+            alert("Oops! You declined!");
+        }
+    });
+});     
+
+
+    });
+    ');
+
+
+?>
+
